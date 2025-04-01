@@ -91,13 +91,14 @@ jobs:
 
       - name: Upgrade Release
         run: |
-          docker run --rm -v $(pwd)/dist:/dist ${{ env.app_name }}-static-loong64:${{ env.app_version }}
-          sudo chown -R $USER:$USER dist
-          ls -al dist
-          7z a dist/ninja-linux-loongarch64.zip ./dist/ninja
-          cd dist
+          docker run --rm -v $(pwd)/release-build:/dist ${{ env.app_name }}-static-loong64:${{ env.app_version }}
+          sudo chown -R $USER:$USER release-build
+          ls -al release-build
+          mkdir artifact
+          7z a artifact/ninja-linux.zip ./release-build/ninja
+          cd artifact
           sha256sum ninja-linux-loongarch64.zip > ninja-linux-loongarch64.zip.sha256
           cd ..
-          gh release upload ${{ env.app_version }} -R ${{ github.repository }} dist/ninja-*
+          gh release upload ${{ env.app_version }} -R ${{ github.repository }} artifact/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
