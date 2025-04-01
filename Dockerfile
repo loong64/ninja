@@ -2,15 +2,15 @@ FROM ghcr.io/loong64/opencloudos:23 AS build-ninja
 ARG TARGETARCH
 
 RUN set -ex && \
-    yum install -y clang-analyzer cmake gcc-c++ gtest-devel libasan make ninja-build && \
+    yum install -y clang-analyzer cmake gcc-c++ git gtest-devel libasan make ninja-build && \
     yum clean all
 
-ARG NINJA_VERSION
+ARG VERSION
 ARG WORKDIR=/opt/ninja
 
-WORKDIR ${WORKDIR}
+RUN git clone --depth=1 --branch ${VERSION} https://github.com/ninja-build/ninja ${WORKDIR}
 
-RUN git clone --depth=1 --branch ${NINJA_VERSION} https://github.com/ninja-build/ninja ${WORKDIR}
+WORKDIR ${WORKDIR}
 
 RUN set -ex && \
     cmake -GNinja -DCMAKE_BUILD_TYPE=Release -B release-build && \
