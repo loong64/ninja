@@ -95,7 +95,7 @@ jobs:
           sudo chown -R $USER:$USER release-build
           ls -al release-build
           mkdir artifact
-          7z a artifact/ninja-linux.zip ./release-build/ninja
+          7z a artifact/ninja-linux-loongarch64.zip ./release-build/ninja
           cd artifact
           sha256sum ninja-linux-loongarch64.zip > ninja-linux-loongarch64.zip.sha256
           cd ..
