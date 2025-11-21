@@ -5,9 +5,11 @@ ARG TARGETARCH
 
 RUN set -ex \
     && dnf -y install dnf-plugins-core \
-    && if [ "${TARGETARCH}" != "loong64" ]; then \
-        dnf config-manager --set-enabled powertools; \
-    fi \
+    && \
+    case "${TARGETARCH}" in \
+        loong64|riscv64) ;; \
+        *) dnf config-manager --set-enabled powertools ;; \
+    esac \
     && dnf install -y clang-analyzer cmake gcc-c++ git gtest-devel libasan make ninja-build \
     && dnf clean all
 
